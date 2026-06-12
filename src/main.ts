@@ -1,15 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // Enable CORS
   app.enableCors();
+  app.useStaticAssets(join(process.cwd(), 'public'));
 
-  // Enable validation pipe globally
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,11 +19,10 @@ async function bootstrap() {
     }),
   );
 
-  // Setup Swagger documentation
   const config = new DocumentBuilder()
     .setTitle('Hash Function API')
     .setDescription(
-      'A comprehensive API for generating and comparing hashes using various cryptographic algorithms including MD5, SHA family (SHA-1, SHA-256, SHA-384, SHA-512), SHA-3 family (SHA3-256, SHA3-384, SHA3-512), BLAKE2 (BLAKE2b512, BLAKE2s256), RIPEMD-160, Whirlpool, and Bcrypt.',
+      'Generate, inspect, and compare hashes with classic digests, SHA-2, SHA-3, BLAKE2, RIPEMD-160, Whirlpool where supported by the runtime, and bcrypt password hashes.',
     )
     .setVersion('1.0')
     .addTag('Hashing', 'Endpoints for hash generation and comparison')
@@ -35,20 +35,9 @@ async function bootstrap() {
   await app.listen(port);
 
   console.log(`
-╔═══════════════════════════════════════════════════════════════╗
-║                                                               ║
-║          🔐 Hash Function API is now running! 🔐             ║
-║                                                               ║
-║  API URL:        http://localhost:${port}                         ║
-║  Swagger Docs:   http://localhost:${port}/api                     ║
-║                                                               ║
-║  Available Algorithms:                                        ║
-║  • MD5, SHA-1, SHA-256, SHA-384, SHA-512                     ║
-║  • SHA3-256, SHA3-384, SHA3-512                              ║
-║  • BLAKE2b512, BLAKE2s256                                     ║
-║  • RIPEMD-160, Whirlpool, Bcrypt                             ║
-║                                                               ║
-╚═══════════════════════════════════════════════════════════════╝
+Hash Function API is running
+UI:           http://localhost:${port}
+Swagger Docs: http://localhost:${port}/api
   `);
 }
 

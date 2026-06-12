@@ -1,4 +1,13 @@
-import { IsString, IsNotEmpty, IsEnum, IsOptional, IsNumber, Min, Max } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEnum,
+  IsOptional,
+  IsInt,
+  Min,
+  Max,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export enum HashAlgorithm {
@@ -35,14 +44,16 @@ export class HashRequestDto {
   algorithm: HashAlgorithm;
 
   @ApiProperty({
-    description: 'Number of rounds for bcrypt (only applicable for bcrypt algorithm)',
+    description:
+      'Number of rounds for bcrypt (only applicable for bcrypt algorithm)',
     example: 10,
     required: false,
     minimum: 4,
     maximum: 31,
   })
   @IsOptional()
-  @IsNumber()
+  @Type(() => Number)
+  @IsInt()
   @Min(4)
   @Max(31)
   rounds?: number;
