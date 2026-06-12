@@ -57,7 +57,8 @@ export class MultiHashResponseDto {
     description: 'Object containing all hash results',
     example: {
       md5: '65a8e27d8879283831b664bd8b7f0ad4',
-      sha256: 'dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f',
+      sha256:
+        'dffd6021bb2bd5b0af676290809ec3a53191dd81c7f70a4b28688a362182986f',
     },
   })
   hashes: Record<string, string>;
@@ -75,6 +76,12 @@ export class AlgorithmInfoDto {
     example: 'sha256',
   })
   name: string;
+
+  @ApiProperty({
+    description: 'Algorithm family or primary category',
+    example: 'SHA-2',
+  })
+  category: string;
 
   @ApiProperty({
     description: 'Description of the algorithm',
@@ -95,8 +102,21 @@ export class AlgorithmInfoDto {
   secure: boolean;
 
   @ApiProperty({
+    description: 'Whether the algorithm is available in the current runtime',
+    example: true,
+  })
+  available: boolean;
+
+  @ApiProperty({
     description: 'Common use cases',
     example: ['Password hashing', 'Data integrity', 'Digital signatures'],
   })
   useCases: string[];
+
+  @ApiProperty({
+    description: 'Security or runtime note when one applies',
+    example: 'Deprecated for cryptographic security.',
+    required: false,
+  })
+  warning?: string;
 }

@@ -1,16 +1,21 @@
-# Hash Function API
+# Hash Function
 
-A comprehensive NestJS API for generating and comparing hashes using various cryptographic algorithms.
+A polished NestJS hashing workspace with a browser UI, Swagger documentation, and REST endpoints for generating and comparing hashes.
 
 ## Features
 
-- **13 Hashing Algorithms** including:
+- **Browser workspace** at `http://localhost:3000`
+  - Single-hash generation with algorithm details
+  - Batch digest table with copy actions
+  - Bcrypt verification panel
+  - Live input byte and character counts
+- **Runtime-aware algorithm support** for:
   - **MD5** - Legacy checksum algorithm
   - **SHA Family** - SHA-1, SHA-256, SHA-384, SHA-512
   - **SHA-3 Family** - SHA3-256, SHA3-384, SHA3-512
   - **BLAKE2** - BLAKE2b512, BLAKE2s256 (high-performance hashing)
   - **RIPEMD-160** - Used in Bitcoin addresses
-  - **Whirlpool** - 512-bit cryptographic hash
+  - **Whirlpool** - 512-bit cryptographic hash when exposed by Node.js/OpenSSL
   - **Bcrypt** - Adaptive password hashing
 
 - **RESTful API** with comprehensive endpoints
@@ -43,6 +48,9 @@ npm install
 # Start development server
 npm run start:dev
 
+# Open the web UI
+open http://localhost:3000
+
 # Visit Swagger documentation
 open http://localhost:3000/api
 ```
@@ -57,6 +65,11 @@ http://localhost:3000
 ### Swagger Documentation
 ```
 http://localhost:3000/api
+```
+
+### Browser UI
+```
+http://localhost:3000
 ```
 
 ### Available Endpoints
@@ -91,12 +104,12 @@ Generate hashes using all available algorithms at once.
 #### 4. Get Algorithm Information
 **GET** `/hash/algorithms`
 
-Get detailed information about all available algorithms including security properties and use cases.
+Get detailed information about all known algorithms including security properties, use cases, and whether each algorithm is available in the current runtime.
 
 #### 5. Get Supported Algorithms List
 **GET** `/hash/algorithms/list`
 
-Get a simple list of all supported algorithm names.
+Get a simple list of algorithm names supported by the current runtime.
 
 #### 6. Health Check
 **GET** `/hash/health`
@@ -187,12 +200,17 @@ npm run lint
 
 ```
 Hash-Function/
+├── public/
+│   ├── app.js                         # Browser UI behavior
+│   ├── index.html                     # Browser UI shell
+│   └── styles.css                     # Browser UI styles
 ├── src/
 │   ├── hash/
 │   │   ├── dto/
 │   │   │   ├── hash-request.dto.ts    # Request DTOs
 │   │   │   └── hash-response.dto.ts   # Response DTOs
 │   │   ├── hash.controller.ts          # API endpoints
+│   │   ├── hash.service.spec.ts        # Hash service tests
 │   │   ├── hash.service.ts             # Hashing logic
 │   │   └── hash.module.ts              # Hash module
 │   ├── app.module.ts                   # Root module
@@ -209,6 +227,7 @@ Hash-Function/
 2. **Legacy Algorithms**: MD5 and SHA-1 should only be used for non-security purposes
 3. **Bcrypt Rounds**: Default is 10 rounds. Use 12-14 for higher security
 4. **Data Integrity**: Use SHA-256, SHA-512, SHA3-256, or BLAKE2 for file integrity
+5. **Runtime Availability**: Some digests, especially Whirlpool, depend on the Node.js/OpenSSL build
 
 ## License
 

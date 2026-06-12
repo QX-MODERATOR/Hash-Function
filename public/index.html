@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hash Function</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a class="brand" href="/" aria-label="Hash Function home">
+        <span class="brand-mark" aria-hidden="true">#</span>
+        <span>
+          <span class="brand-title">Hash Function</span>
+          <span class="brand-subtitle" id="healthLabel">Checking API</span>
+        </span>
+      </a>
+      <nav class="header-actions" aria-label="Project links">
+        <a href="/api">Swagger</a>
+        <a href="/hash/algorithms">Algorithms</a>
+      </nav>
+    </header>
+
+    <main class="workspace">
+      <section class="panel input-panel" aria-labelledby="inputTitle">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Source</p>
+            <h1 id="inputTitle">Hash Workspace</h1>
+          </div>
+          <div class="stat-strip" aria-label="Input statistics">
+            <span id="charCount">0 chars</span>
+            <span id="byteCount">0 bytes</span>
+          </div>
+        </div>
+
+        <label class="field">
+          <span>Input text</span>
+          <textarea
+            id="hashInput"
+            rows="9"
+            spellcheck="false"
+            placeholder="Type or paste text to hash"
+          ></textarea>
+        </label>
+
+        <div class="control-grid">
+          <label class="field">
+            <span>Algorithm</span>
+            <select id="algorithmSelect"></select>
+          </label>
+
+          <label class="field rounds-field" id="roundsField">
+            <span>Bcrypt rounds <output id="roundsValue">10</output></span>
+            <input id="roundsInput" type="range" min="4" max="16" value="10" />
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button class="primary-button" id="generateButton" type="button">
+            Generate hash
+          </button>
+          <button id="multiButton" type="button">Run all digests</button>
+          <button class="quiet-button" id="clearButton" type="button">Clear</button>
+        </div>
+      </section>
+
+      <section class="panel result-panel" aria-labelledby="resultTitle">
+        <div class="panel-heading compact">
+          <div>
+            <p class="eyebrow">Result</p>
+            <h2 id="resultTitle">Selected Hash</h2>
+          </div>
+          <button class="copy-button" id="copyHashButton" type="button">Copy</button>
+        </div>
+
+        <div class="result-meta" id="resultMeta">
+          <span>No result yet</span>
+        </div>
+        <pre class="hash-output" id="hashOutput" aria-live="polite"></pre>
+
+        <article class="algorithm-detail" id="algorithmCard">
+          <div class="algorithm-detail-head">
+            <span class="algorithm-name" id="algorithmName">sha256</span>
+            <span class="badge" id="securityBadge">Secure</span>
+          </div>
+          <p id="algorithmDescription"></p>
+          <div class="tag-row" id="useCaseTags"></div>
+          <p class="runtime-note" id="runtimeNote"></p>
+        </article>
+      </section>
+
+      <section class="panel compare-panel" aria-labelledby="compareTitle">
+        <div class="panel-heading compact">
+          <div>
+            <p class="eyebrow">Verify</p>
+            <h2 id="compareTitle">Bcrypt Compare</h2>
+          </div>
+          <span class="compare-status" id="compareStatus">Idle</span>
+        </div>
+
+        <label class="field">
+          <span>Bcrypt hash</span>
+          <textarea
+            id="compareHash"
+            rows="4"
+            spellcheck="false"
+            placeholder="$2b$10$..."
+          ></textarea>
+        </label>
+
+        <div class="button-row">
+          <button id="compareButton" type="button">Compare</button>
+          <button class="quiet-button" id="useGeneratedButton" type="button">
+            Use generated hash
+          </button>
+        </div>
+      </section>
+
+      <section class="panel table-panel" aria-labelledby="multiTitle">
+        <div class="panel-heading compact">
+          <div>
+            <p class="eyebrow">Batch</p>
+            <h2 id="multiTitle">All Available Digests</h2>
+          </div>
+          <span class="table-count" id="multiCount">0 rows</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Algorithm</th>
+                <th scope="col">Bits</th>
+                <th scope="col">Hash</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody id="multiTableBody">
+              <tr>
+                <td colspan="4" class="empty-cell">No batch result yet</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script src="/app.js" defer></script>
+  </body>
+</html>

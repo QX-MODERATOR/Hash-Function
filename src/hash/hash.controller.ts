@@ -6,12 +6,7 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBody,
-} from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { HashService } from './hash.service';
 import {
   HashRequestDto,
@@ -137,11 +132,19 @@ export class HashController {
     status: 200,
     description: 'Service is healthy',
   })
-  healthCheck(): { status: string; timestamp: string; service: string } {
+  healthCheck(): {
+    status: string;
+    timestamp: string;
+    service: string;
+    algorithmsAvailable: number;
+    uptimeSeconds: number;
+  } {
     return {
       status: 'ok',
       timestamp: new Date().toISOString(),
       service: 'Hash Function API',
+      algorithmsAvailable: this.hashService.getSupportedAlgorithms().length,
+      uptimeSeconds: Math.round(process.uptime()),
     };
   }
 }
